@@ -28,31 +28,31 @@ object Fight {
       if(mapOfAttackTypes.seq.contains(attackType)) mapOfAttackTypes(attackType) else "fast"
     }
 
-    print(CYAN + narrator("player attack", playerAttack) + RESET)
+    narration(narrator("player attack", playerAttack), colour = CYAN, newline = false)
 
-    val damage: Int = calcDamage(player.level, attackType)
+    val damage: Int = calcDamage(player.level, attackType, player.attackModifier)
     if(enemy.health - damage < 0) enemy.health = 0 else enemy.health -= damage
 
-    println(RED + narrator("enemy health", enemy.health.toString) + RESET)
+    narration(narrator("enemy health", enemy.health.toString), colour = RED)
   }
 
   private def enemyAttack(player: Player, enemy: Enemy): Unit = {
     val enemyAttack: String = listOfAttackTypes(Random.nextInt(2))
 
-    print(CYAN + narrator("enemy attack", enemyAttack) + RESET)
+    narration(narrator("enemy attack", enemyAttack), colour = CYAN, newline = false)
 
-    val damage: Int = calcDamage(enemy.level, enemyAttack)
+    val damage: Int = calcDamage(enemy.level, enemyAttack, enemy.attackModifer)
     if(player.health - damage < 0) player.health = 0 else player.health -= damage
 
-    println(RED + narrator("your health", player.health.toString) + RESET)
+    narration(narrator("your health", player.health.toString), RED)
   }
 
-  private def calcDamage(level: Int, attackType: String): Int = {
+  private def calcDamage(level: Int, attackType: String, modifier: Double = 1): Int = {
     val chanceToHit: Int = Random.nextInt(20)
     attackType.toLowerCase match {
-      case "slow" | "s" => if(chanceToHit > 15) (level * 1.5).ceil.toInt else 0
-      case "medium" | "m" => if(chanceToHit > 8) (level * 1.3).ceil.toInt else 0
-      case _ => if(chanceToHit > 3) level else 0
+      case "slow" | "s" => if(chanceToHit > 15) (level * 1.4 * modifier).ceil.toInt else 0
+      case "medium" | "m" => if(chanceToHit > 8) (level * 1.2 * modifier).ceil.toInt else 0
+      case _ => if(chanceToHit > 3) (level * modifier).ceil.toInt else 0
     }
   }
 }

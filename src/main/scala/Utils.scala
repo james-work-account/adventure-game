@@ -1,4 +1,5 @@
 import scala.collection.immutable.Map
+import scala.io.AnsiColor
 
 object Utils {
   def narrator(key: String, variable: String = ""): String = {
@@ -21,7 +22,10 @@ object Utils {
     text(key)
   }
 
-  lazy val listOfEnemies: List[String] = List("Orc")
+  lazy val listOfEnemies: List[String] = {
+    List.fill(6)("Orc") ++
+      List.fill(3)("Rat")
+  }
   lazy val listOfVowels: List[Char] = List('a', 'e', 'i', 'o', 'u')
   lazy val listOfAttackTypes: List[String] = List("slow", "medium", "fast")
   lazy val mapOfAttackTypes: Map[String, String] = Map(
@@ -32,4 +36,8 @@ object Utils {
     "f" -> "fast",
     "fast" -> "fast"
   )
+
+  def narration(input: String, colour: String = scala.Console.RESET, newline: Boolean = true): Unit = {
+    if(newline) println(colour + input + scala.Console.RESET) else print(colour + input + scala.Console.RESET)
+  }
 }
